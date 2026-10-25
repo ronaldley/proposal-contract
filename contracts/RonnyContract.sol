@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
-contract ProposalContract {
+contract RonnyContract {
     // ****************** Data ***********************
 
     address owner;
@@ -77,6 +77,10 @@ contract ProposalContract {
         }
     }
 
+    function terminateProposal() external onlyOwner active {
+        proposal_history[counter].is_active = false;
+    }
+
     // Custom logic: two-thirds supermajority, pass votes count as abstention.
     // A proposal succeeds only if more than 2/3 of the decisive votes (approve + reject) are approve.
     // Multiplication is used instead of division to avoid rounding issues with integers.
@@ -103,5 +107,13 @@ contract ProposalContract {
             }
         }
         return false;
+    }
+
+    function getCurrentProposal() external view returns(Proposal memory) {
+        return proposal_history[counter];
+    }
+
+    function getProposal(uint256 number) external view returns(Proposal memory) {
+        return proposal_history[number];
     }
 }
